@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  events:
+    build:
+      context: ../events
+    image: events:latest
+    container_name: events
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-database
+    environment:
+      - APPLICATION_NAME=events
+      - PORT=8080
+      - JWT_SECRET_KEY=tZGmQvy6cXtIxIGzYjYyTzFoLtb7hT7aQ30h0YUhCRSgNcH5Mc3z2Y6mCk4ZWpb1dyaGyqz0QSF/u6RAOu2U6++dVdEBdpW0itrolfSkbZIwquMsiCrnTIEydKjQZpfiFnv+/D8Z1UwezDOm08sUjCFNgsByBtLhqWLcdHnNvets4DXl+5PdwmyM7LOUfi3O6+kOvbxyAhPjRyAiwC2iIM2wVlsYBkeTo4G2ULY+XcWBlVHzq1zqpOKfkQDBMkxRiN0jGPD8OIME7/okP6rRETBcwUmwOFIQH+ih4U8055knKTyxVNdsmfEF7CfU2BbVY03whyjMf4WkFNzKe3S545LlD49SqczxDAeAhHTYZ7c=
+      - DATASOURCE_URL=jdbc:postgresql://postgres-database:5432/events_db
+      - DATASOURCE_USERNAME=events_user
+      - DATASOURCE_PASSWORD=events_password
+
+  postgres-database:
+    image: postgres:latest
+    container_name: postgres-database
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=events_db
+      - POSTGRES_USER=events_user
+      - POSTGRES_PASSWORD=events_password
+    volumes:
+      - ./postgres-database:/var/lib/postgresql/data

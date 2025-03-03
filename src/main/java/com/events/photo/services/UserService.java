@@ -1,3 +1,4 @@
 package com.events.photo.services;
 
-public interface UserService {}
+public interface UserService {
+}
